@@ -16,27 +16,26 @@ lazy_static! {
 async fn get_page(i: usize) -> Vec<usize> {
     let millis = Uniform::from(0..10).sample(&mut rand::thread_rng());
     println!(
-        "[{}] > get_page({}) will complete in {} ms, {:?}",
+        "[{}] # get_page({}) will complete in {} ms",
         START_TIME.elapsed().as_millis(),
         i,
-        millis,
-        std::thread::current().id()
+        millis
     );
 
     sleep(Duration::from_millis(millis)).await;
     println!(
-        "[{}] < get_page({}) completed",
+        "[{}] # get_page({}) completed",
         START_TIME.elapsed().as_millis(),
         i
     );
 
-    (i..(i + 1)).collect()
+    (10 * i..10 * (i + 1)).collect()
 }
 
 #[tokio::main]
 async fn main() {
-    println!("{:?}", run_parallel(160, 16).await);
-    //println!("{:?}", run_buffered(40, 4).await);
+    println!("{:?}", run_parallel(100, 8).await);
+    //println!("{:?}", run_buffered(100, 8).await);
 }
 
 #[allow(dead_code)]
